@@ -1,0 +1,12 @@
+/* You can add global styles to this file, and also import other style files */
+@import "./animate.scss";
+
+body {
+    background-color: #edeff1 !important;
+}
+
+.card {
+    border: 0px;
+    border-radius: 5px;
+    box-shadow: 0 3px 7px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .05);
+}

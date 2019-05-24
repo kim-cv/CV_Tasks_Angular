@@ -1,0 +1,98 @@
+<div class="animated fadeIn">
+
+  <div class="register-container flex-row align-items-center">
+    <div class="container">
+
+      <!-- Title -->
+      <div class="row mb-5">
+        <div class="col text-center">
+          <h1>Fortæl os lidt om dig selv</h1>
+        </div>
+      </div>
+      <!-- End Title -->
+
+
+      <!-- Register form -->
+      <div class="row justify-content-center">
+        <div class="col-6">
+          <div class="card p-3 mb-0">
+            <div class="card-body">
+              <form [formGroup]="formgroupRegister"
+                    (keyup.enter)="HTMLSignUp()">
+                    
+                <div class="row">
+                  <div class="col">
+                    <div class="alert alert-danger"
+                         *ngIf="errorMessageAtSignup?.length > 0">{{errorMessageAtSignup}}</div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col">
+                    <label>Fornavn</label>
+                    <input type="text"
+                           class="form-control form-control-lg"
+                           [ngClass]="{'is-invalid':formgroupRegister.controls['firstName'].valid === false && formgroupRegister.controls['firstName'].dirty === true}"
+                           formControlName="firstName">
+                  </div>
+                </div>
+
+                <div class="row mt-4">
+                  <div class="col">
+                    <label>Efternavn</label>
+                    <input type="text"
+                           class="form-control form-control-lg"
+                           [ngClass]="{'is-invalid':formgroupRegister.controls['lastName'].valid === false && formgroupRegister.controls['lastName'].dirty === true}"
+                           formControlName="lastName">
+                  </div>
+                </div>
+
+                <div class="row mt-4">
+                  <div class="col">
+                    <label>E-Mail</label>
+                    <input type="email"
+                           class="form-control form-control-lg"
+                           [ngClass]="{'is-invalid':formgroupRegister.controls['email'].valid === false && formgroupRegister.controls['email'].dirty === true}"
+                           formControlName="email">
+                  </div>
+                </div>
+
+                <div class="row mt-4">
+                  <div class="col">
+                    <label>Kodeord</label>
+                    <input type="password"
+                           class="form-control form-control-lg"
+                           [ngClass]="{'is-invalid':formgroupRegister.controls['password'].valid === false && formgroupRegister.controls['password'].dirty === true}"
+                           formControlName="password">
+                  </div>
+                </div>
+              </form>
+
+              <div class="row mt-4">
+                <div class="col-4">
+                  <button class='btn btn-lg btn-block btn-primary'
+                          (click)="HTMLBack()">Tilbage
+                  </button>
+                </div>
+
+                <div class="col-8">
+                  <app-btn-ladda #btnSignUp
+                                 (click)="HTMLSignUp()"
+                                 [text]="'Opret Konto'"
+                                 [icon]="''"
+                                 [size]="'lg'"
+                                 [isBlock]="true"
+                                 [initialState]="formgroupRegister.valid === true ? 'primary' : 'secondary'">
+                  </app-btn-ladda>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Register form -->
+
+    </div>
+  </div>
+</div>

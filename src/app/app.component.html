@@ -1,0 +1,10 @@
+<ng-container *ngIf="isLoggedIn">
+    <fa-icon id="signOut"
+             class="fa-3x"
+             (click)="HTMLSignOut()"
+             [icon]="faArrowLeft"></fa-icon>
+</ng-container>
+
+<div class="container">
+    <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,7 @@
+<button #btnLadda
+        class="btn ladda-button"
+        [ngClass]="btnClasses"
+        data-style="zoom-in"
+        [type]="isSubmit ? 'submit' : 'button'">
+        <span [ngClass]="icon" *ngIf="icon.length > 0"></span> {{text}}
+</button>

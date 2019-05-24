@@ -1,0 +1,195 @@
+<div class="animated fadeIn">
+
+     <div class='row mt-5 align-items-end'>
+
+          <!-- Add task form -->
+          <div class='col-10'>
+               <form [formGroup]="formgroupAddTask">
+
+                    <!-- Task name -->
+                    <div class='row'>
+                         <div class="col-3">
+                              <h4 class="greyTextColor">Name</h4>
+                              <small class="form-text text-muted">
+                                   Max 30 characters.<br />Currently
+                                   {{this?.formgroupAddTask?.controls['name']?.value?.length}}
+                              </small>
+                         </div>
+                         <div class="col-9">
+                              <div class="card">
+                                   <div class="card-body">
+                                        <div class="form-row">
+                                             <div class="col-12 form-group">
+                                                  <!-- Error msg -->
+                                                  <ng-container
+                                                                *ngIf="formgroupAddTask.enabled && formgroupAddTask.controls['name'].valid === false && formgroupAddTask.controls['name'].dirty">
+                                                       <div [@simpleFadeAnimation]="'in'"
+                                                            class="alert alert-danger">
+                                                            <ul class='mb-0'>
+                                                                 <li>Required</li>
+                                                                 <li>Allowed characters: Uppercase, lowercase, æøå
+                                                                      including
+                                                                      numbers and space.</li>
+                                                                 <li>Max 30 characters.<br />Currently
+                                                                      {{this?.formgroupAddTask?.controls['name']?.value?.length}}
+                                                                 </li>
+                                                            </ul>
+                                                       </div>
+                                                  </ng-container>
+                                                  <!-- End Error msg -->
+
+                                                  <input type="text"
+                                                         class="form-control"
+                                                         [ngClass]="{'is-invalid':formgroupAddTask.enabled && formgroupAddTask.controls['name'].valid === false && formgroupAddTask.controls['name'].dirty}"
+                                                         formControlName="name">
+                                             </div>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+                    <!-- End Task name -->
+
+
+                    <!-- Task description -->
+                    <div class='row mt-3'>
+                         <div class="col-3">
+                              <h4 class="greyTextColor">Description</h4>
+                              <small class="form-text text-muted">
+                                   Max 250 characters.<br />Currently
+                                   {{this?.formgroupAddTask?.controls['description']?.value?.length}}
+                              </small>
+                         </div>
+                         <div class="col-9">
+                              <div class="card">
+                                   <div class="card-body">
+                                        <div class="form-row">
+                                             <div class="col-12 form-group">
+                                                  <!-- Error msg -->
+                                                  <ng-container
+                                                                *ngIf="formgroupAddTask.enabled && formgroupAddTask.controls['description'].valid === false && formgroupAddTask.controls['description'].dirty">
+                                                       <div [@simpleFadeAnimation]="'in'"
+                                                            class="alert alert-danger">
+                                                            <ul class='mb-0'>
+                                                                 <li>Required</li>
+                                                                 <li>Allowed characters: Uppercase, lowercase, æøå
+                                                                      including
+                                                                      numbers and space.</li>
+                                                                 <li>Max 250 characters.<br />Currently
+                                                                      {{this?.formgroupAddTask?.controls['description']?.value?.length}}
+                                                                 </li>
+                                                            </ul>
+                                                       </div>
+                                                  </ng-container>
+                                                  <!-- End Error msg -->
+
+                                                  <textarea rows="2"
+                                                            class="form-control"
+                                                            [ngClass]="{'is-invalid':formgroupAddTask.enabled && formgroupAddTask.controls['description'].valid === false && formgroupAddTask.controls['description'].dirty}"
+                                                            formControlName="description"></textarea>
+                                             </div>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+                    <!-- End Task description -->
+
+
+               </form>
+          </div>
+          <!-- End Add task form -->
+
+          <!-- Submit button -->
+          <div class='col-2'>
+               <app-btn-ladda #btnCreateTask
+                              (click)="HTMLCreateTask()"
+                              [text]="'Add task'"
+                              [icon]="''"
+                              [size]="'lg'"
+                              [isBlock]="true"
+                              [initialState]="formgroupAddTask.valid === true ? 'primary' : 'secondary'">
+               </app-btn-ladda>
+          </div>
+          <!-- End Add task form -->
+     </div>
+
+
+     <!-- List of tasks -->
+     <div class='row mt-5'>
+          <div class='col'>
+
+               <app-loading-spinner name="loadSpinnerTasks"
+                                    show="true"></app-loading-spinner>
+
+               <div [@listAnimation]="tasks.length">
+                    <div *ngFor="let task of tasks"
+                         class="card mt-4 greyTextColor">
+                         <div class="card-body">
+
+                              <!-- Dropdown burger -->
+                              <div class="btn-group float-right"
+                                   dropdown>
+                                   <button id="button-basic"
+                                           dropdownToggle
+                                           type="button"
+                                           class="btn"
+                                           aria-controls="dropdown-basic">
+                                        <fa-icon [icon]="icon_faBars"></fa-icon>
+                                   </button>
+                                   <ul id="dropdown-basic"
+                                       *dropdownMenu
+                                       class="dropdown-menu"
+                                       role="menu"
+                                       aria-labelledby="button-basic">
+                                        <li *ngIf="task.description.length > 50"
+                                            role="menuitem">
+                                             <a class="dropdown-item"
+                                                href="#"
+                                                (click)="HTMLExpandToggle(task, $event)">
+                                                  Expand
+                                             </a>
+                                        </li>
+                                        <li role="menuitem">
+                                             <a class="dropdown-item"
+                                                href="#"
+                                                (click)="HTMLDeleteTask(task, $event)">
+                                                  Delete
+                                             </a>
+                                        </li>
+                                   </ul>
+                              </div>
+                              <!-- End Dropdown burger -->
+
+                              <h4 class="card-title">{{task.name}}</h4>
+
+                              <ng-container *ngIf="HTMLGetExpandState(task)?.state === 'CLOSED'">
+                                   <p class="card-text"
+                                      style="white-space:pre-line;">{{task.description | stringShorter:50:true:3}}</p>
+                              </ng-container>
+
+                              <ng-container *ngIf="HTMLGetExpandState(task)?.state === 'OPEN'">
+                                   <p class="card-text"
+                                      style="white-space:pre-line;">{{task.description}}</p>
+                              </ng-container>
+
+                              <p class="card-text">Task added: {{task.creationDateUtcIso | date:'medium'}}</p>
+                         </div>
+                    </div>
+               </div>
+
+          </div>
+     </div>
+
+     <ng-container *ngIf="isLoadingComplete && tasks.length <= 0">
+          <div [@simpleFadeAnimation]="'in'"
+               class='row justify-content-center mt-5'>
+               <div class='col-3 text-center greyTextColor'>
+                    <h3 class="font-weight-bold">No Tasks!</h3>
+                    <fa-icon class='fa-7x'
+                             [icon]="icon_surprise"></fa-icon>
+               </div>
+          </div>
+     </ng-container>
+     <!-- End List of tasks -->
+</div>
