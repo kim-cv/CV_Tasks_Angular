@@ -120,7 +120,7 @@ class User extends AbstractBackendService {
     return this
       .httpClient
       .post<any>(
-        environment.apiUrlDev + 'users/' + userToken,
+        environment.apiUrlDev + 'users',
         {
           firstName: firstName,
           lastName: lastName
