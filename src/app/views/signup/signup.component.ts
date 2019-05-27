@@ -23,10 +23,10 @@ export class SignupComponent {
   constructor(private formBuilder: FormBuilder, private router: Router, private afAuth: AngularFireAuth, private backendService: BackendService) {
     // Make formgroup
     this.formgroupRegister = this.formBuilder.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', Validators.required],
-      password: ['', Validators.required],
+      firstName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(75)]],
+      lastName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
+      email: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(100)]],
     });
   }
 

@@ -5,6 +5,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { faKey, faAt } from '@fortawesome/free-solid-svg-icons';
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -24,11 +25,11 @@ export class LoginComponent {
   public faKey = faKey;
   public faAt = faAt;
 
-  constructor(private formBuilder: FormBuilder, private afAuth: AngularFireAuth) {
+  constructor(private formBuilder: FormBuilder, private afAuth: AngularFireAuth, private router: Router) {
     // Make formgroup
     this.formgroupLogin = this.formBuilder.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required],
+      email: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(75), Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(100)]],
     });
   }
 
@@ -99,6 +100,9 @@ export class LoginComponent {
       await this.LogIn(email, password);
 
       this.btnLogin.SetStateBeforeAndAfterWithDuration(BtnStates.success, BtnStates.secondary, 1000);
+      setTimeout(() => {
+        this.router.navigate(['/']);
+      }, 1000);
     } catch (err) {
       this.btnLogin.SetStateBeforeAndAfterWithDuration(BtnStates.danger, BtnStates.secondary, 1000);
 

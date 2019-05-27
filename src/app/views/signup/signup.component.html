@@ -32,7 +32,10 @@
                     <label>Fornavn</label>
                     <input type="text"
                            class="form-control form-control-lg"
-                           [ngClass]="{'is-invalid':formgroupRegister.controls['firstName'].valid === false && formgroupRegister.controls['firstName'].dirty === true}"
+                           [ngClass]="{
+                             'is-valid':formgroupRegister.get('firstName').valid === true && formgroupRegister.get('firstName').dirty === true && formgroupRegister.enabled,
+                             'is-invalid':formgroupRegister.get('firstName').valid === false && formgroupRegister.get('firstName').dirty === true && formgroupRegister.enabled
+                            }"
                            formControlName="firstName">
                   </div>
                 </div>
@@ -42,7 +45,10 @@
                     <label>Efternavn</label>
                     <input type="text"
                            class="form-control form-control-lg"
-                           [ngClass]="{'is-invalid':formgroupRegister.controls['lastName'].valid === false && formgroupRegister.controls['lastName'].dirty === true}"
+                           [ngClass]="{
+                             'is-valid':formgroupRegister.get('lastName').valid === true && formgroupRegister.get('lastName').dirty === true && formgroupRegister.enabled,
+                             'is-invalid':formgroupRegister.get('lastName').valid === false && formgroupRegister.get('lastName').dirty === true && formgroupRegister.enabled
+                            }"
                            formControlName="lastName">
                   </div>
                 </div>
@@ -52,7 +58,10 @@
                     <label>E-Mail</label>
                     <input type="email"
                            class="form-control form-control-lg"
-                           [ngClass]="{'is-invalid':formgroupRegister.controls['email'].valid === false && formgroupRegister.controls['email'].dirty === true}"
+                           [ngClass]="{
+                             'is-valid':formgroupRegister.get('email').valid === true && formgroupRegister.get('email').dirty === true && formgroupRegister.enabled,
+                             'is-invalid':formgroupRegister.get('email').valid === false && formgroupRegister.get('email').dirty === true && formgroupRegister.enabled
+                          }"
                            formControlName="email">
                   </div>
                 </div>
@@ -62,7 +71,10 @@
                     <label>Kodeord</label>
                     <input type="password"
                            class="form-control form-control-lg"
-                           [ngClass]="{'is-invalid':formgroupRegister.controls['password'].valid === false && formgroupRegister.controls['password'].dirty === true}"
+                           [ngClass]="{
+                             'is-valid':formgroupRegister.get('password').valid === true && formgroupRegister.get('password').dirty === true && formgroupRegister.enabled,
+                             'is-invalid':formgroupRegister.get('password').valid === false && formgroupRegister.get('password').dirty === true && formgroupRegister.enabled
+                            }"
                            formControlName="password">
                   </div>
                 </div>

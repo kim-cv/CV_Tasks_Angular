@@ -32,6 +32,10 @@
 
                           <input type="text"
                                  class="form-control"
+                                 [ngClass]="{
+                                  'is-valid':formgroupLogin.get('email').valid === true && formgroupLogin.get('email').dirty === true && formgroupLogin.enabled,
+                                  'is-invalid':formgroupLogin.get('email').valid === false && formgroupLogin.get('email').dirty === true && formgroupLogin.enabled
+                                 }"
                                  placeholder="E-mail"
                                  formControlName="email">
                         </div>
@@ -49,6 +53,10 @@
 
                           <input type="password"
                                  class="form-control"
+                                 [ngClass]="{
+                                  'is-valid':formgroupLogin.get('password').valid === true && formgroupLogin.get('password').dirty === true && formgroupLogin.enabled,
+                                  'is-invalid':formgroupLogin.get('password').valid === false && formgroupLogin.get('password').dirty === true && formgroupLogin.enabled
+                                 }"
                                  placeholder="Password"
                                  formControlName="password">
                         </div>
