@@ -34,6 +34,7 @@ A: It works but there is still elements that needs to be refined and completed.
 
 
 ## For the Angular project
+Code found here https://github.com/kim-cv/CV_Tasks_Angular  
 1. In the root folder run the command "npm i"
 2. In folder "src" create new folder "environments" and create two new files "environment.ts" "environment.prod.ts"
 3. In environment.prod.ts add content
@@ -69,6 +70,7 @@ export const environment = {
 
 
 ## For the API project
+Code found here https://github.com/kim-cv/CV_Tasks_API  
 1. In folder "functions" run the command "npm i"
 2. In folder "functions" create a new folder "environments" and inside that folder create a new file "environment.ts" with content
 ```javascript
