@@ -5,6 +5,9 @@ This is two repositories for my CV to display how I would construct a simple tas
 Q: Is it complete?  
 A: It works but there is still elements that needs to be refined and completed.
 
+Q: Is it screensize responsive?
+A: It uses Bootstrap grid layout but its not set up to be all screensize + mobile friendly. Maybe in the future.
+
 
 ## This Angular repository includes the following
 * Usage of Firebase Auth and Firebase Hosting.
