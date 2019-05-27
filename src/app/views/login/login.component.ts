@@ -54,37 +54,13 @@ export class LoginComponent {
     } catch (err) {
       // Log SignIn Error
       console.error('signInWithEmailAndPassword Error:', err);
-      this.btnLogin.Stop();
-      this.btnLogin.SetStateBeforeAndAfterWithDuration(BtnStates.danger, BtnStates.secondary, 1500);
-
-      switch (err.code) {
-        case 'auth/invalid-email':
-          this.errorMessageAtSignIn = 'Invalid Email';
-          break;
-        case 'auth/user-disabled':
-          this.errorMessageAtSignIn = 'Account disabled, if you believe this is an error please contact support.';
-          break;
-        case 'auth/user-not-found':
-          this.errorMessageAtSignIn = 'Account not found.';
-          break;
-        case 'auth/wrong-password':
-          this.errorMessageAtSignIn = 'Wrong password.';
-          break;
-        default:
-          this.errorMessageAtSignIn = 'Something went wrong, please try again and if you encounter the same error please contact support.';
-          console.error('Login Error:', err);
-          break;
-      }
-      return;
+      throw err;
     }
-
-    this.btnLogin.Stop();
-    this.btnLogin.SetStateBeforeAndAfterWithDuration(BtnStates.success, BtnStates.secondary, 1500);
-    return;
   }
 
   // #region Methods called by view
-  public HTMLLogIn() {
+  public async HTMLLogIn() {
+    this.formgroupLogin.disable();
     this.btnLogin.Start();
 
     // Force re-validate on submit
@@ -99,6 +75,7 @@ export class LoginComponent {
 
     // Verify form validity
     if (this.formgroupLogin.invalid) {
+      this.formgroupLogin.enable();
       this.btnLogin.Stop();
       this.btnLogin.SetStateBeforeAndAfterWithDuration(BtnStates.danger, BtnStates.secondary, 1500);
       return;
@@ -117,7 +94,38 @@ export class LoginComponent {
       return;
     }
 
-    this.LogIn(email, password);
+    // Try log in
+    try {
+      await this.LogIn(email, password);
+
+      this.btnLogin.SetStateBeforeAndAfterWithDuration(BtnStates.success, BtnStates.secondary, 1500);
+    } catch (err) {
+      this.btnLogin.SetStateBeforeAndAfterWithDuration(BtnStates.danger, BtnStates.secondary, 1500);
+
+      switch (err.code) {
+        case 'auth/invalid-email':
+          this.errorMessageAtSignIn = 'Invalid Email';
+          break;
+        case 'auth/user-disabled':
+          this.errorMessageAtSignIn = 'Account disabled, if you believe this is an error please contact support.';
+          break;
+        case 'auth/user-not-found':
+          this.errorMessageAtSignIn = 'Account not found.';
+          break;
+        case 'auth/wrong-password':
+          this.errorMessageAtSignIn = 'Wrong password.';
+          break;
+        default:
+          this.errorMessageAtSignIn = 'Something went wrong, please try again and if you encounter the same error please contact support.';
+          break;
+      }
+    }
+
+    this.btnLogin.Stop();
+    setTimeout(() => {
+      this.formgroupLogin.enable();
+      this.formgroupLogin.reset();
+    }, 1500);
   }
   // #endregion
 }
