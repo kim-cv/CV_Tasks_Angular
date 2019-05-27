@@ -6,6 +6,7 @@ import { faKey, faAt } from '@fortawesome/free-solid-svg-icons';
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase';
 import { Router } from '@angular/router';
+import { validator_preventOnlySpaces } from 'src/app/formvalidators/formValidators';
 
 @Component({
   selector: 'app-login',
@@ -28,8 +29,8 @@ export class LoginComponent {
   constructor(private formBuilder: FormBuilder, private afAuth: AngularFireAuth, private router: Router) {
     // Make formgroup
     this.formgroupLogin = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(75), Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(100)]],
+      email: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(75), Validators.email, validator_preventOnlySpaces(1)]],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(100), validator_preventOnlySpaces(6)]],
     });
   }
 
@@ -82,18 +83,8 @@ export class LoginComponent {
       return;
     }
 
-    // TODO: make into custom formgroup validator and show field validation errors
-    const email: string = this.formgroupLogin.get('email').value;
-    if (email.trim().length <= 0) {
-      this.formgroupLogin.get('email').setErrors({ lengthTooShort: 'true' });
-      return;
-    }
-
-    const password: string = this.formgroupLogin.get('password').value;
-    if (password.trim().length <= 0) {
-      this.formgroupLogin.get('password').setErrors({ lengthTooShort: 'true' });
-      return;
-    }
+    const email: string = this.formgroupLogin.get('email').value.trim();
+    const password: string = this.formgroupLogin.get('password').value.trim();
 
     // Try log in
     try {

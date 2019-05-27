@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { BackendService } from '../../services/backend-service/backend.service';
+import { validator_preventOnlySpaces } from 'src/app/formvalidators/formValidators';
 
 @Component({
   selector: 'app-signup',
@@ -23,10 +24,10 @@ export class SignupComponent {
   constructor(private formBuilder: FormBuilder, private router: Router, private afAuth: AngularFireAuth, private backendService: BackendService) {
     // Make formgroup
     this.formgroupRegister = this.formBuilder.group({
-      firstName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(75)]],
-      lastName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
-      email: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(100)]],
+      firstName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(75), validator_preventOnlySpaces(1)]],
+      lastName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), validator_preventOnlySpaces(1)]],
+      email: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.email, validator_preventOnlySpaces(1)]],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(100), validator_preventOnlySpaces(6)]],
     });
   }
 
@@ -67,30 +68,10 @@ export class SignupComponent {
       return;
     }
 
-    // TODO: make into custom formgroup validator and show field validation errors
-    const firstName: string = this.formgroupRegister.get('firstName').value;
-    if (firstName.trim().length <= 0) {
-      this.formgroupRegister.get('firstName').setErrors({ lengthTooShort: 'true' });
-      return;
-    }
-
-    const lastName: string = this.formgroupRegister.get('lastName').value;
-    if (lastName.trim().length <= 0) {
-      this.formgroupRegister.get('lastName').setErrors({ lengthTooShort: 'true' });
-      return;
-    }
-
-    const email: string = this.formgroupRegister.get('email').value;
-    if (email.trim().length <= 0) {
-      this.formgroupRegister.get('email').setErrors({ lengthTooShort: 'true' });
-      return;
-    }
-
-    const password: string = this.formgroupRegister.get('password').value;
-    if (password.trim().length <= 0) {
-      this.formgroupRegister.get('password').setErrors({ lengthTooShort: 'true' });
-      return;
-    }
+    const firstName: string = this.formgroupRegister.get('firstName').value.trim();
+    const lastName: string = this.formgroupRegister.get('lastName').value.trim();
+    const email: string = this.formgroupRegister.get('email').value.trim();
+    const password: string = this.formgroupRegister.get('password').value.trim();
 
     // Try sign up
     let userCredentials: firebase.auth.UserCredential;

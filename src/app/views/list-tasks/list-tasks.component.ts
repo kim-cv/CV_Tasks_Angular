@@ -11,6 +11,7 @@ import { of } from 'rxjs';
 import { take, finalize, catchError } from 'rxjs/operators';
 import { SpinnerService } from 'src/app/components/loading-spinner/spinner-service';
 import { listAnimation, simpleFadeAnimation } from 'src/app/animations/animations';
+import { validator_preventOnlySpaces } from 'src/app/formvalidators/formValidators';
 
 
 
@@ -48,8 +49,8 @@ export class ListTasksComponent implements OnInit {
 
     // Make formgroup
     this.formgroupAddTask = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.pattern('^[ a-zA-Z0-9æøåÆØÅ\n.,]+$'), Validators.minLength(0), Validators.maxLength(30)]],
-      description: ['', [Validators.required, Validators.pattern('^[ a-zA-Z0-9æøåÆØÅ\n.,]+$'), Validators.minLength(0), Validators.maxLength(250)]]
+      name: ['', [Validators.required, Validators.pattern('^[ a-zA-Z0-9æøåÆØÅ\n.,]+$'), Validators.minLength(1), Validators.maxLength(30), validator_preventOnlySpaces(1)]],
+      description: ['', [Validators.required, Validators.pattern('^[ a-zA-Z0-9æøåÆØÅ\n.,]+$'), Validators.minLength(1), Validators.maxLength(250), validator_preventOnlySpaces(1)]]
     });
   }
 
@@ -194,18 +195,8 @@ export class ListTasksComponent implements OnInit {
       return;
     }
 
-    // TODO: make into custom formgroup validator and show field validation errors
-    const name: string = this.formgroupAddTask.get('name').value;
-    if (name.trim().length <= 0) {
-      this.formgroupAddTask.get('name').setErrors({ lengthTooShort: 'true' });
-      return;
-    }
-
-    const description: string = this.formgroupAddTask.get('description').value;
-    if (description.trim().length <= 0) {
-      this.formgroupAddTask.get('description').setErrors({ lengthTooShort: 'true' });
-      return;
-    }
+    const name: string = this.formgroupAddTask.get('name').value.trim();
+    const description: string = this.formgroupAddTask.get('description').value.trim();
 
     try {
       await this.CreateTask(name, description);

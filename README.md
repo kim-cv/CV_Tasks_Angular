@@ -12,6 +12,7 @@ A: It uses Bootstrap grid layout but its not set up to be all screensize + mobil
 ## This Angular repository includes the following
 * Usage of Firebase Auth and Firebase Hosting.
 * Lazy loaded modules/components.
+* 1 Custom formgroup validator.
 * 1 Pipe for shortening long strings and appending dots.
 * 1 Route guard used to lock access if not logged in.
 * 1 Service used to communicate with the backend API which is hosted on Firebase Cloud Functions.
