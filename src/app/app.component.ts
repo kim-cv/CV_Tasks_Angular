@@ -26,7 +26,6 @@ export class AppComponent implements OnInit, OnDestroy {
         if (typeof user !== 'undefined' && user !== null) {
           // Logged in
           this.isLoggedIn = true;
-          this.router.navigate(['']);
         } else {
           // Logged out
           this.isLoggedIn = false;

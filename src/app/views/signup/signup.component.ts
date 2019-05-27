@@ -1,10 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { BtnLaddaComponent, BtnStates } from 'src/app/components/btn-ladda/btn-ladda.component';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { BackendService } from '../../services/backend-service/backend.service';
-import { take, finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-signup',
@@ -18,6 +17,7 @@ export class SignupComponent {
   // Formgroup
   public formgroupRegister: FormGroup;
 
+  // Error msg
   public errorMessageAtSignup = '';
 
   constructor(private formBuilder: FormBuilder, private router: Router, private afAuth: AngularFireAuth, private backendService: BackendService) {
@@ -30,68 +30,23 @@ export class SignupComponent {
     });
   }
 
-  private async SignUp(email: string, password: string, firstname: string, lastname: string) {
-    let userCredentials: firebase.auth.UserCredential;
-
+  private CreateAccount(email: string, password: string) {
     // Create FireBase user
-    try {
-      userCredentials = await this.afAuth
-        .auth
-        .createUserWithEmailAndPassword(email, password);
-    } catch (err) {
-      this.btnSignUp.Stop();
-      this.btnSignUp.SetStateBeforeAndAfterWithDuration(BtnStates.danger, BtnStates.secondary, 1500);
-
-      switch (err.code) {
-        case 'auth/email-already-in-use':
-          this.errorMessageAtSignup = 'Email already in use.';
-          break;
-        case 'auth/invalid-email':
-          this.errorMessageAtSignup = 'Invalid email.';
-          break;
-        case 'auth/operation-not-allowed':
-          this.errorMessageAtSignup = 'Something went wrong, please try again and if the error persist please contact support.';
-          break;
-        case 'auth/weak-password':
-          this.errorMessageAtSignup = 'Password must have a minimum length of 6 characters.';
-          break;
-        default:
-          this.errorMessageAtSignup = 'Something went wrong, please try again and if the error persist please contact support.';
-          console.error('Login Error:', err);
-          break;
-      }
-      throw err;
-    }
-
-    const userToken = await userCredentials.user.getIdToken();
-
-    await this.SetupUser(userToken, firstname, lastname);
+    return this.afAuth
+      .auth
+      .createUserWithEmailAndPassword(email, password);
   }
 
   private SetupUser(userToken: string, firstName: string, lastName: string) {
-    this.backendService
+    return this.backendService
       .user
       .setup_user(userToken, firstName, lastName)
-      .pipe(
-        take(1),
-        finalize(() => {
-          this.btnSignUp.Stop();
-          this.btnSignUp.SetState(BtnStates.success);
-          this.router.navigate(['/']);
-        })
-      )
-      .subscribe(
-        () => {
-        },
-        err => {
-          this.btnSignUp.Stop();
-          this.btnSignUp.SetStateBeforeAndAfterWithDuration(BtnStates.danger, BtnStates.secondary, 1500);
-          console.error('Backend Error', err);
-        });
+      .toPromise();
   }
 
   // #region Methods called by view
-  public HTMLSignUp() {
+  public async HTMLSignUp() {
+    this.formgroupRegister.disable();
     this.btnSignUp.Start();
 
     // Force re-validate on submit
@@ -106,8 +61,9 @@ export class SignupComponent {
 
     // Verify form validity
     if (this.formgroupRegister.invalid) {
+      this.formgroupRegister.enable();
       this.btnSignUp.Stop();
-      this.btnSignUp.SetStateBeforeAndAfterWithDuration(BtnStates.danger, BtnStates.secondary, 1500);
+      this.btnSignUp.SetStateBeforeAndAfterWithDuration(BtnStates.danger, BtnStates.secondary, 1000);
       return;
     }
 
@@ -136,7 +92,54 @@ export class SignupComponent {
       return;
     }
 
-    this.SignUp(email, password, firstName, lastName);
+    // Try sign up
+    let userCredentials: firebase.auth.UserCredential;
+    try {
+      userCredentials = await this.CreateAccount(email, password);
+    } catch (err) {
+      console.error('Err at CreateAccount():', err);
+      switch (err.code) {
+        case 'auth/email-already-in-use':
+          this.errorMessageAtSignup = 'Email already in use.';
+          break;
+        case 'auth/invalid-email':
+          this.errorMessageAtSignup = 'Invalid email.';
+          break;
+        case 'auth/operation-not-allowed':
+          this.errorMessageAtSignup = 'Something went wrong, please try again and if the error persist please contact support.';
+          break;
+        case 'auth/weak-password':
+          this.errorMessageAtSignup = 'Password must have a minimum length of 6 characters.';
+          break;
+        default:
+          this.errorMessageAtSignup = 'Something went wrong, please try again and if the error persist please contact support.';
+          break;
+      }
+
+      this.btnSignUp.SetStateBeforeAndAfterWithDuration(BtnStates.danger, BtnStates.secondary, 1000);
+      this.btnSignUp.Stop();
+      setTimeout(() => {
+        this.formgroupRegister.enable();
+        this.formgroupRegister.reset();
+      }, 1000);
+
+      return;
+    }
+
+    const userToken = await userCredentials.user.getIdToken();
+    try {
+      await this.SetupUser(userToken, firstName, lastName);
+
+      this.btnSignUp.SetState(BtnStates.success);
+      setTimeout(() => {
+        this.router.navigate(['/']);
+      }, 1000);
+    } catch (err) {
+      this.btnSignUp.SetStateBeforeAndAfterWithDuration(BtnStates.danger, BtnStates.secondary, 1000);
+      console.error('SetupUser Backend Error', err);
+    }
+
+    this.btnSignUp.Stop();
   }
 
   public HTMLBack() {

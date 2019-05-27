@@ -190,7 +190,7 @@ export class ListTasksComponent implements OnInit {
     if (this.formgroupAddTask.invalid) {
       this.formgroupAddTask.enable();
       this.btnCreateTask.Stop();
-      this.btnCreateTask.SetStateBeforeAndAfterWithDuration(BtnStates.danger, BtnStates.secondary, 1500);
+      this.btnCreateTask.SetStateBeforeAndAfterWithDuration(BtnStates.danger, BtnStates.secondary, 1000);
       return;
     }
 

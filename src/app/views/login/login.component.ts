@@ -42,7 +42,7 @@ export class LoginComponent {
       // Log Persistence Error
       console.error('SetPersistence Error:', err);
       this.btnLogin.Stop();
-      this.btnLogin.SetStateBeforeAndAfterWithDuration(BtnStates.danger, BtnStates.secondary, 1500);
+      this.btnLogin.SetStateBeforeAndAfterWithDuration(BtnStates.danger, BtnStates.secondary, 1000);
       return;
     }
 
@@ -77,7 +77,7 @@ export class LoginComponent {
     if (this.formgroupLogin.invalid) {
       this.formgroupLogin.enable();
       this.btnLogin.Stop();
-      this.btnLogin.SetStateBeforeAndAfterWithDuration(BtnStates.danger, BtnStates.secondary, 1500);
+      this.btnLogin.SetStateBeforeAndAfterWithDuration(BtnStates.danger, BtnStates.secondary, 1000);
       return;
     }
 
@@ -98,9 +98,9 @@ export class LoginComponent {
     try {
       await this.LogIn(email, password);
 
-      this.btnLogin.SetStateBeforeAndAfterWithDuration(BtnStates.success, BtnStates.secondary, 1500);
+      this.btnLogin.SetStateBeforeAndAfterWithDuration(BtnStates.success, BtnStates.secondary, 1000);
     } catch (err) {
-      this.btnLogin.SetStateBeforeAndAfterWithDuration(BtnStates.danger, BtnStates.secondary, 1500);
+      this.btnLogin.SetStateBeforeAndAfterWithDuration(BtnStates.danger, BtnStates.secondary, 1000);
 
       switch (err.code) {
         case 'auth/invalid-email':
@@ -125,7 +125,7 @@ export class LoginComponent {
     setTimeout(() => {
       this.formgroupLogin.enable();
       this.formgroupLogin.reset();
-    }, 1500);
+    }, 1000);
   }
   // #endregion
 }
