@@ -201,6 +201,7 @@ export class ListTasksComponent implements OnInit {
     try {
       await this.CreateTask(name, description);
       this.btnCreateTask.SetStateBeforeAndAfterWithDuration(BtnStates.success, BtnStates.secondary, 1000);
+      this.formgroupAddTask.reset();
     } catch (err) {
       this.btnCreateTask.SetStateBeforeAndAfterWithDuration(BtnStates.danger, BtnStates.secondary, 1000);
     }
@@ -208,7 +209,6 @@ export class ListTasksComponent implements OnInit {
     this.btnCreateTask.Stop();
     setTimeout(() => {
       this.formgroupAddTask.enable();
-      this.formgroupAddTask.reset();
     }, 1000);
   }
 

@@ -62,6 +62,7 @@ export class LoginComponent {
 
   // #region Methods called by view
   public async HTMLLogIn() {
+    this.errorMessageAtSignIn = '';
     this.formgroupLogin.disable();
     this.btnLogin.Start();
 
@@ -119,7 +120,6 @@ export class LoginComponent {
     this.btnLogin.Stop();
     setTimeout(() => {
       this.formgroupLogin.enable();
-      this.formgroupLogin.reset();
     }, 1000);
   }
   // #endregion

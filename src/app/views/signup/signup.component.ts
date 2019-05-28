@@ -47,6 +47,7 @@ export class SignupComponent {
 
   // #region Methods called by view
   public async HTMLSignUp() {
+    this.errorMessageAtSignup = '';
     this.formgroupRegister.disable();
     this.btnSignUp.Start();
 
@@ -101,7 +102,6 @@ export class SignupComponent {
       this.btnSignUp.Stop();
       setTimeout(() => {
         this.formgroupRegister.enable();
-        this.formgroupRegister.reset();
       }, 1000);
 
       return;
