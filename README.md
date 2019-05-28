@@ -8,6 +8,7 @@ A: It works but there is still elements that needs to be refined and completed.
 Q: Is it screensize responsive?  
 A: It uses Bootstrap grid layout but its not set up to be all screensize + mobile friendly. Maybe in the future.
 
+![](showcase.gif)
 
 ## This Angular repository includes the following
 * Usage of Firebase Auth and Firebase Hosting.
