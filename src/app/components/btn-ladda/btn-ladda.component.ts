@@ -18,7 +18,7 @@ export enum BtnStates {
 })
 
 export class BtnLaddaComponent {
-  @ViewChild('btnLadda') set content(content: ElementRef) {
+  @ViewChild('btnLadda', { static: true }) set content(content: ElementRef) {
     if (typeof content !== 'undefined' && content !== null) {
       this.btnLadda = Ladda.create(content.nativeElement);
     }

@@ -13,7 +13,7 @@ import { validator_preventOnlySpaces } from 'src/app/formvalidators/formValidato
 })
 export class SignupComponent {
 
-  @ViewChild('btnSignUp') btnSignUp: BtnLaddaComponent;
+  @ViewChild('btnSignUp', { static: true }) btnSignUp: BtnLaddaComponent;
 
   // Formgroup
   public formgroupRegister: FormGroup;

@@ -8,16 +8,16 @@ import { CanAccessLoggedInArea } from './guards/CanAccessLoggedInArea';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: './views/list-tasks/list-tasks.module#ListTasksModule',
+    loadChildren: () => import('./views/list-tasks/list-tasks.module').then(m => m.ListTasksModule),
     canActivate: [CanAccessLoggedInArea]
   },
   {
     path: 'login',
-    loadChildren: './views/login/login.module#LoginModule'
+    loadChildren: () => import('./views/login/login.module').then(m => m.LoginModule)
   },
   {
     path: 'signup',
-    loadChildren: './views/signup/signup.module#SignupModule'
+    loadChildren: () => import('./views/signup/signup.module').then(m => m.SignupModule)
   }
 ];
 

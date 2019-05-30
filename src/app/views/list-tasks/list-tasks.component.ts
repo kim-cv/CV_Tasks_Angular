@@ -23,7 +23,7 @@ import { validator_preventOnlySpaces } from 'src/app/formvalidators/formValidato
 })
 export class ListTasksComponent implements OnInit {
 
-  @ViewChild('btnCreateTask') btnCreateTask: BtnLaddaComponent;
+  @ViewChild('btnCreateTask', { static: true }) btnCreateTask: BtnLaddaComponent;
 
   // Formgroup
   public formgroupAddTask: FormGroup;
