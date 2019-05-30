@@ -2,6 +2,8 @@
 
 This is two repositories for my CV to display how I would construct a simple task app with Angular and Firebase.
 
+Angular is running at the newest version, 8.
+
 Q: Is it complete?  
 A: It works but there is still elements that needs to be refined and completed.
 
